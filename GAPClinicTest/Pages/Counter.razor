@@ -1,0 +1,18 @@
+﻿@page "/counter"
+
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+
+<EjsButton @onclick="IncrementCount" Content="Click me"></EjsButton>
+
+<EjsTextBox Placeholder='First Name'></EjsTextBox>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}
