@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using GAPClinicTest.Core.Interfaces;
+using GAPClinicTest.Core.UseCases;
 
 namespace GAPClinicTest.Api
 {
@@ -26,9 +27,21 @@ namespace GAPClinicTest.Api
 
         public IConfiguration Configuration { get; }
 
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                builder =>
+                {
+                    builder.WithOrigins("https://localhost:44335",
+                                        "http://localhost:44335");
+                });
+            });
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -39,7 +52,9 @@ namespace GAPClinicTest.Api
            options.UseSqlServer(Configuration.GetConnectionString("ClinicContext")));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IPatientUseCase, PatientUseCase>();
 
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,7 +76,7 @@ namespace GAPClinicTest.Api
             });
 
             app.UseAuthorization();
-
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

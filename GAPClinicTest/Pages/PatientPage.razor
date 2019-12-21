@@ -1,0 +1,22 @@
+﻿@page "/patients"
+@inherits PatientPageBase
+
+<h1>Patients</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (Patients == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <EjsGrid AllowFiltering="true" AllowSorting="true" DataSource="@Patients">
+        <GridColumns>
+            <GridColumn Field=@nameof(GAPClinicTest.DTO.Patient.FirstName) HeaderText="First Name"></GridColumn>
+            <GridColumn Field=@nameof(GAPClinicTest.DTO.Patient.LastName) HeaderText="Last Name"></GridColumn>
+            <GridColumn Field=@nameof(GAPClinicTest.DTO.Patient.SocialNumber) HeaderText="SocialNumber"></GridColumn>
+            <GridColumn Field=@nameof(GAPClinicTest.DTO.Patient.DOB) Format="yMd" HeaderText="Date of Birth"></GridColumn>
+        </GridColumns>
+    </EjsGrid>
+}
