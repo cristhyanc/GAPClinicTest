@@ -41,7 +41,7 @@ namespace GAPClinicTest.Rest
             using (var httpClient = new HttpClient())
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                if (method == HttpMethod.Get)
+                if (method == HttpMethod.Get || method == HttpMethod.Delete )
                 {
                     if (data != null)
                     {
@@ -106,7 +106,7 @@ namespace GAPClinicTest.Rest
                         {
                             response.Dispose();
                         }
-                        throw new SerializationException("Unable to deserialize the response.", ex);
+                        throw new SerializationException("Unable to deserialize the response: "  + ex.Message , ex);
                     }
 
 
@@ -125,7 +125,7 @@ namespace GAPClinicTest.Rest
                     }
 
 
-                    if (response.StatusCode == System.Net.HttpStatusCode.PreconditionFailed)
+                    if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
                     {
                         var excep = new ValidationException(responseContent);
                         throw excep;
@@ -184,7 +184,7 @@ namespace GAPClinicTest.Rest
                     }
 
 
-                    if (response.StatusCode == System.Net.HttpStatusCode.PreconditionFailed)
+                    if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
                     {
                         var excep = new ValidationException(responseContent);
                         throw excep;
@@ -208,7 +208,7 @@ namespace GAPClinicTest.Rest
             {
                 HttpResponseMessage response = await Call(url, method, cancellationToken, data);
                 cancellationToken.ThrowIfCancellationRequested();
-                if (response.StatusCode == System.Net.HttpStatusCode.OK || response.StatusCode == System.Net.HttpStatusCode.NoContent)
+                if (response.StatusCode == System.Net.HttpStatusCode.OK || response.StatusCode == System.Net.HttpStatusCode.NoContent || response.StatusCode == System.Net.HttpStatusCode.Created)
                 {
                     return true;
                 }
@@ -221,7 +221,7 @@ namespace GAPClinicTest.Rest
                     }
 
                     var stringSerialized = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    if (response.StatusCode == System.Net.HttpStatusCode.PreconditionFailed)
+                    if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
                     {
                         var excep = new ValidationException(stringSerialized);
                         throw excep;

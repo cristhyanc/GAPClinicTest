@@ -1,22 +1,66 @@
-﻿@page "/patients"
+﻿@page "/patientpage/{Id:guid}"
+@page "/patientpage"
 @inherits PatientPageBase
 
-<h1>Patients</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
+<h1>Appointment</h1>
 
-@if (Patients == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <EjsGrid AllowFiltering="true" AllowSorting="true" DataSource="@Patients">
-        <GridColumns>
-            <GridColumn Field=@nameof(GAPClinicTest.DTO.Patient.FirstName) HeaderText="First Name"></GridColumn>
-            <GridColumn Field=@nameof(GAPClinicTest.DTO.Patient.LastName) HeaderText="Last Name"></GridColumn>
-            <GridColumn Field=@nameof(GAPClinicTest.DTO.Patient.SocialNumber) HeaderText="SocialNumber"></GridColumn>
-            <GridColumn Field=@nameof(GAPClinicTest.DTO.Patient.DOB) Format="yMd" HeaderText="Date of Birth"></GridColumn>
-        </GridColumns>
-    </EjsGrid>
-}
+<div class="content">
+
+
+    <div class="row">
+        <div class="col">
+
+            <br />
+
+            <div class="form-label-group">
+                <label for="FirstName">FirstName</label>
+                <EjsTextBox ID="FirstName" @bind-Value="@Patient.FirstName"></EjsTextBox>
+
+            </div>
+
+            <div class="form-label-group">
+                <label for="LastName">LastName</label>
+                <EjsTextBox ID="LastName" @bind-Value="@Patient.LastName"></EjsTextBox>
+
+            </div>
+
+            <div class="form-label-group">
+                <label for="SocialNumber">Social Number</label>
+                <EjsTextBox ID="SocialNumber" @bind-Value="@Patient.SocialNumber"></EjsTextBox>
+
+            </div>
+
+            <div class="form-label-group">
+                <label for="dtpDate">Date of Birth</label>
+                <EjsDatePicker ID="dtpDate" TValue="DateTime" @bind-Value="@Patient.DOB" Placeholder="Select Date"></EjsDatePicker>
+
+            </div>
+
+
+            <div class="row ">
+                <div class="col-6">
+                    <EjsButton @onclick="SavePatient">Save</EjsButton>
+                 
+                    <EjsButton @onclick="GoBack">Go Back</EjsButton>
+                </div>
+            </div>
+
+
+            <EjsDialog @ref="@ejsDialog" Width="250px" IsModal="true">
+                <DialogEvents OnOverlayClick="OnOverlayclick">
+                </DialogEvents>
+                <DialogTemplates>
+                    <Content>
+                        @ServerError
+                    </Content>
+                </DialogTemplates>
+            </EjsDialog>
+
+
+
+        </div>
+
+    </div>
+
+</div>

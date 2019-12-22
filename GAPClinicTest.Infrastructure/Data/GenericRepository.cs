@@ -28,7 +28,7 @@ namespace GAPClinicTest.Infrastructure.Data
 
             if (filter != null)
             {
-                query = query.Where(filter);
+                query = query.AsNoTracking().Where(filter);
             }
 
             foreach (var includeProperty in includeProperties.Split
@@ -49,7 +49,12 @@ namespace GAPClinicTest.Infrastructure.Data
 
         public virtual TEntity GetByID(object id)
         {
-            return dbSet.Find(id);
+           var result= dbSet.Find(id);
+            if (result != null)
+            {
+                context .Entry(result).State = EntityState.Detached;
+            }
+            return result;
         }
 
         public virtual void Insert(TEntity entity)

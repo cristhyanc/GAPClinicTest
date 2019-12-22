@@ -8,6 +8,8 @@ namespace GAPClinicTest.Core.Interfaces
   public  interface IPatientUseCase
     {
         IEnumerable<Patient> GetPatients();
-        bool SavePatient(Patient patient);
+        Patient GetPatient(Guid parentID);
+        Patient Save(Patient patient);      
+        void Delete(Guid patientID);
     }
 }

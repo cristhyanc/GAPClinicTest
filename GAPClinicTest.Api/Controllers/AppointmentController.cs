@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using GAPClinicTest.Core.Domain.Entities;
@@ -11,22 +12,22 @@ namespace GAPClinicTest.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    
-    public class PatientController : ControllerBase
+
+    public class AppointmentController : ControllerBase
     {
-        IPatientUseCase patientUseCase;
-        public PatientController(IPatientUseCase patient)
+        IAppointmentUserCase appointmentUseCase;
+        public AppointmentController(IAppointmentUserCase appointmentUser )
         {
-            patientUseCase = patient;
+            appointmentUseCase = appointmentUser;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Patient>> Get()
+        public ActionResult<IEnumerable<Appointment>> Get()
         {
             try
             {
-                return Ok(patientUseCase.GetPatients());
-            }          
+                return Ok(appointmentUseCase.GetAppointments());
+            }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -34,11 +35,11 @@ namespace GAPClinicTest.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Patient> GetById([FromQuery] Guid id)
+        public ActionResult<Appointment> GetById([FromQuery] Guid id)
         {
             try
             {
-                return Ok(patientUseCase.GetPatient(id));
+                return Ok(appointmentUseCase.GetAppointment(id));
             }
             catch (Exception ex)
             {
@@ -47,25 +48,25 @@ namespace GAPClinicTest.Api.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Patient> Post([FromBody] Patient patient)
+        public ActionResult<Appointment> Post([FromBody] Appointment appointment)
         {
             try
             {
-                return Created("", patientUseCase.Save (patient));
-            }
+                return Created("", appointmentUseCase.SaveAppointment(appointment));
+            }           
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-
+       
         [HttpDelete("{id}")]
         public ActionResult Delete([FromQuery] Guid id)
         {
             try
             {
-                patientUseCase.Delete(id);
+                appointmentUseCase.DeleteAppointment(id);
                 return Ok();
             }
             catch (Exception ex)

@@ -1,0 +1,66 @@
+﻿@page "/appointmentpage/{Id:guid}"
+@page "/appointmentpage"
+@inherits AppointmentPageBase
+
+<h1>Appointment</h1>
+
+<div class="content">
+
+
+    <div class="row">
+        <div class="col">
+
+            <br />
+            <div class="form-label-group">
+
+                <EjsDateTimePicker ID="dtpDate" TValue="DateTime" @bind-Value="@Appointment.AppointmentDate" Placeholder="Select Date and Time"></EjsDateTimePicker>
+                <label for="dtpDate">Date</label>
+            </div>
+
+
+            <div class="form-label-group">
+
+                <EjsComboBox Placeholder="e.g. John Doe" @bind-Value="@SelectedPatientID" DataSource="@Patients">
+                    <ComboBoxFieldSettings Text="FullName" Value="PatientIDString"></ComboBoxFieldSettings>
+                </EjsComboBox>
+
+
+                <label for="ddlpartients">Patient</label>
+            </div>
+
+            <div class="form-label-group">
+
+                <EjsComboBox Placeholder="e.g. General Practice" @bind-Value="@SelectedAppointmentType" DataSource="@EnumValues">
+                    <ComboBoxFieldSettings Text="FullName" Value="PatientIDString"></ComboBoxFieldSettings>
+                </EjsComboBox>
+
+                <label for="ddlAppointmentType">Appointment Type</label>
+            </div>
+
+
+
+            <div class="row ">
+                <div class="col-6">
+                    <EjsButton @onclick="SaveAppointment">Save</EjsButton>
+                    <EjsButton @onclick="DeleteData">Cancel Appointment</EjsButton>
+                    <EjsButton @onclick="GoBack">Go Back</EjsButton>
+                </div>  
+            </div>
+
+
+           
+            <EjsDialog @ref="@ejsDialog" Width="250px" IsModal="true">
+                <DialogEvents OnOverlayClick="OnOverlayclick">
+                </DialogEvents>
+                <DialogTemplates>
+                    <Content>
+                       @ServerError
+                    </Content>
+                </DialogTemplates>
+            </EjsDialog>
+
+        </div>
+      
+    </div>
+
+</div>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GAPClinicTest.Core.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,6 +17,31 @@ namespace GAPClinicTest.Core.Domain.Entities
         public string LastName { get; set; }
         public string SocialNumber { get; set; }     
         public DateTime DOB { get; set; }
-        public ICollection<Appointment> Appointments { get; set; }
+
+        public void Save(IUnitOfWork uow)
+        {
+            if (string.IsNullOrEmpty(this.FirstName))
+            {
+                throw new ValidationException("FirstName is required");
+            }
+
+            if (string.IsNullOrEmpty(this.LastName))
+            {
+                throw new ValidationException("LastName is required");
+            }
+                     
+
+            if (this.PatientID == Guid.Empty)
+            {
+                uow.PatientRepository.Insert(this);
+            }
+            else
+            {
+                uow.PatientRepository.Update(this);
+            }
+
+        }
+
+
     }
 }

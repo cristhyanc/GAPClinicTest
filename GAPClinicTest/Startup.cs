@@ -12,7 +12,10 @@ namespace GAPClinicTest
         {
             string url = "https://localhost:44345";
             services.AddSyncfusionBlazor();            
-            services.AddScoped<PatientService>(x => new PatientService("", url));
+            services.AddScoped<PatientService>(x => new PatientService(Shared.AppSettings.APITOKEN , url));
+            services.AddScoped<AppointmentService>(x => new AppointmentService(Shared.AppSettings.APITOKEN, url));
+            services.AddScoped<LoginService>(x => new LoginService( url));
+            
         }
 
         public void Configure(IComponentsApplicationBuilder app)

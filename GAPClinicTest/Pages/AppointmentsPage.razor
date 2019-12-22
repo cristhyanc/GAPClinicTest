@@ -1,0 +1,60 @@
+﻿@page "/appointmentsPage"
+@inherits AppointmentsPageBase
+
+
+
+<h1>Appointments</h1>
+
+
+
+
+<div class="content">
+
+
+    <div class="row">       
+
+        <div class="col-8 col-sm-12 col-md-12 col-lg-8">
+
+
+            <EjsButton CssClass="e-info">
+                <NavLink  rel='nofollow' href="appointmentPage">
+                    New
+                </NavLink>
+            </EjsButton>
+
+            <EjsGrid AllowFiltering="true" AllowSorting="true" DataSource="@Appointments">
+                <GridEditSettings AllowEditing="true"></GridEditSettings>
+                <GridEvents TValue="GAPClinicTest.DTO.Appointment"></GridEvents>
+                <GridColumns>
+                    <GridColumn Field=@nameof(GAPClinicTest.DTO.Appointment.AppointmentDate) Format="dd/MM/yyyy" HeaderText="Date"></GridColumn>
+                    <GridColumn Field=@nameof(GAPClinicTest.DTO.Appointment.AppointmentType) HeaderText="Type of Appointment"></GridColumn>
+                    <GridColumn Field="Patient.FirstName" HeaderText="FirstName"></GridColumn>
+                    <GridColumn Field="Patient.LastName" HeaderText="LastName"></GridColumn>
+                    <GridColumn Field="Patient.SocialNumber" HeaderText="Social Number"></GridColumn>
+                    <GridColumn HeaderText="View" TextAlign="TextAlign.Center" Width="120">
+                        <Template>
+                            @{
+                                var appointment = (context as GAPClinicTest.DTO.Appointment);
+                                var link = "appointmentPage/" + appointment.AppointmentID.ToString();
+                                <EjsButton CssClass="e-info">
+                                    <NavLink rel='nofollow' href="@link">
+                                        Edit
+                                    </NavLink>
+                                </EjsButton>
+
+                            }
+                        </Template>
+                    </GridColumn>
+                </GridColumns>
+            </EjsGrid>
+
+
+        </div>
+    </div>
+
+</div>
+
+@code
+{
+
+}

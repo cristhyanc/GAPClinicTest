@@ -14,15 +14,28 @@ namespace GAPClinicTest.Core.UseCases
             uow = work;
         }
 
+        public void Delete(Guid patientID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Patient GetPatient(Guid patientID)
+        {
+            return uow.PatientRepository.GetByID(patientID);
+        }
 
         public IEnumerable<Patient> GetPatients()
         {
             return uow.PatientRepository.Get();
         }
 
-        public bool SavePatient(Patient patient )
+        public Patient Save(Patient patient)
         {
-            return true;
+            patient.Save(this.uow);
+            uow.Save();
+            return patient;
         }
+
+      
     }
 }

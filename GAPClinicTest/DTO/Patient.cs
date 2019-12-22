@@ -11,7 +11,27 @@ namespace GAPClinicTest.DTO
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string SocialNumber { get; set; }
+
+        public string PatientIDString
+        {
+            get
+            {
+                if(PatientID!=null)
+                {
+                    return PatientID.ToString();
+                }
+                return Guid.Empty.ToString();
+            }
+        }
+
+        public string FullName
+        {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+        }
         public DateTime DOB { get; set; }
-        public ICollection<Appointment> Appointments { get; set; }
+        //public ICollection<Appointment> Appointments { get; set; }
     }
 }

@@ -1,9 +1,49 @@
 ﻿@page "/"
+@inherits IndexBase
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+<h1>Hello</h1>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
 
-<EjsCalendar TValue ="DateTime?"></EjsCalendar>
+<EjsDialog @ref="@ejsDialog" Width="450px" Height="300px" IsModal="true">
+  
+    <DialogTemplates>
+        <Content>
+
+            <div class="content">
+
+
+                <div class="row">
+                    <div class="col">
+
+                        <div class="form-label-group">
+                            <label for="User">User</label>
+                            <EjsTextBox ID="User" @bind-Value="@User"></EjsTextBox>
+
+                        </div>
+
+                        <div class="form-label-group">
+                            <label for="Password">Password</label>
+                            <EjsTextBox ID="Password" @bind-Value="@Password"></EjsTextBox>
+
+                        </div>
+
+                        <div class="form-label-group" style="color:red">
+                           @ServerError
+                        </div>
+                        
+                        <br />
+                        <div class="row ">
+                            <div class="col-6">
+                                <EjsButton @onclick="Login">Login</EjsButton>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </Content>
+    </DialogTemplates>
+</EjsDialog>

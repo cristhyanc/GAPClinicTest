@@ -1,0 +1,43 @@
+﻿@page "/patientsPage"
+@inherits PatientsPageBase
+
+<h1>Patients</h1>
+
+
+
+@if (Patients == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+
+    <EjsButton CssClass="e-info">
+        <NavLink rel='nofollow' href="patientPage">
+            New
+        </NavLink>
+    </EjsButton>
+
+    <EjsGrid AllowFiltering="true" AllowSorting="true" DataSource="@Patients">
+        <GridColumns>
+            <GridColumn Field=@nameof(GAPClinicTest.DTO.Patient.FirstName) HeaderText="First Name"></GridColumn>
+            <GridColumn Field=@nameof(GAPClinicTest.DTO.Patient.LastName) HeaderText="Last Name"></GridColumn>
+            <GridColumn Field=@nameof(GAPClinicTest.DTO.Patient.SocialNumber) HeaderText="SocialNumber"></GridColumn>
+            <GridColumn Field=@nameof(GAPClinicTest.DTO.Patient.DOB) Format="dd/MM/yyyy" HeaderText="Date of Birth"></GridColumn>
+            <GridColumn HeaderText="View" TextAlign="TextAlign.Center" Width="120">
+                <Template>
+                    @{
+                        var patient = (context as GAPClinicTest.DTO.Patient);
+                        var link = "patientPage/" + patient.PatientID.ToString();
+                        <EjsButton CssClass="e-info">
+                            <NavLink rel='nofollow' href="@link">
+                                Edit
+                            </NavLink>
+                        </EjsButton>
+
+                    }
+                </Template>
+            </GridColumn>
+        </GridColumns>
+    </EjsGrid>
+}

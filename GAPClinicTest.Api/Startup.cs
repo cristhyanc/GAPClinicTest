@@ -15,6 +15,9 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using GAPClinicTest.Core.Interfaces;
 using GAPClinicTest.Core.UseCases;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace GAPClinicTest.Api
 {
@@ -38,7 +41,8 @@ namespace GAPClinicTest.Api
                 builder =>
                 {
                     builder.WithOrigins("https://localhost:44335",
-                                        "http://localhost:44335");
+                                        "http://localhost:44335").AllowAnyHeader()
+                                .AllowAnyMethod(); ;
                 });
             });
 
@@ -53,8 +57,41 @@ namespace GAPClinicTest.Api
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPatientUseCase, PatientUseCase>();
+            services.AddScoped<IAppointmentUserCase, AppointmentUserCase>();
 
-            
+
+            var key = Encoding.ASCII.GetBytes("9ecc0154-2a82-4633-a567-db9b742c32b4");
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+          .AddJwtBearer(x =>
+          {
+              x.Events = new JwtBearerEvents
+              {
+                  OnTokenValidated = context =>
+                  {
+                      var userId = context.Principal.Identity.Name;
+                      if (!userId.ToUpper().Equals("ADMIN"))
+                      {
+                            // return unauthorized if user no longer exists
+                            context.Fail("Unauthorized");
+                      }
+                      return Task.CompletedTask;
+                  }
+              };
+              x.RequireHttpsMetadata = false;
+              x.SaveToken = true;
+              x.TokenValidationParameters = new TokenValidationParameters
+              {
+                  ValidateIssuerSigningKey = true,
+                  IssuerSigningKey = new SymmetricSecurityKey(key),
+                  ValidateIssuer = false,
+                  ValidateAudience = false
+              };
+          });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

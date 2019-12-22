@@ -21,5 +21,8 @@ namespace GAPClinicTest.DTO
         public DateTime AppointmentDate { get; set; }
         public Guid PatientID { get; set; }
         public AppointmentType AppointmentType { get; set; }
+        public Patient Patient { get; set; }
+
+      
     }
 }
