@@ -41,7 +41,7 @@ namespace GAPClinicTest.Rest
             using (var httpClient = new HttpClient())
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                if (method == HttpMethod.Get || method == HttpMethod.Delete )
+                if (method == HttpMethod.Get || method == HttpMethod.Delete)
                 {
                     if (data != null)
                     {
@@ -58,14 +58,22 @@ namespace GAPClinicTest.Rest
                         httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", this.Toke);
                     }
 
+
+
+
                     cancellationToken.ThrowIfCancellationRequested();
                     if (method != HttpMethod.Get)
                     {
                         var jsonContent = JsonConvert.SerializeObject(data);
                         request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+                        request.Content.Headers.ContentType =
+                            new System.Net.Http.Headers.MediaTypeHeaderValue(
+                            "application/json");                     
                     }
 
-
+                    request.Headers.TryAddWithoutValidation(
+                          "x-custom-header", "value");
 
                     HttpResponseMessage response = new HttpResponseMessage();
                     try
@@ -74,7 +82,7 @@ namespace GAPClinicTest.Rest
                         response = await httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
                     }
                     catch (Exception ex)
-                    {                       
+                    {
                         throw ex;
                     }
 

@@ -27,7 +27,7 @@ namespace GAPClinicTest.Pages
             }
             catch (Exception ex)
             {
-                ServerError = ex.Message;
+                ServerError = ex.StackTrace ;
             }
         }
 

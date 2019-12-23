@@ -5,11 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using GAPClinicTest.Core.Domain.Entities;
 using GAPClinicTest.Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GAPClinicTest.Api.Controllers
 {
+  
     [ApiController]
     [Route("[controller]")]
 

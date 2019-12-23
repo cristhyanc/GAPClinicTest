@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GAPClinicTest.Infrastructur
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GAPClinicTest.Shared", "GAPClinicTest.Shared\GAPClinicTest.Shared.csproj", "{7D4E7F67-A219-4FC4-BB56-C6569A78FB93}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GAPClinicTest.Test", "GAPClinicTest.Test\GAPClinicTest.Test.csproj", "{DBEE9A6B-FE7E-46FE-A0FC-96179946982B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{7D4E7F67-A219-4FC4-BB56-C6569A78FB93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D4E7F67-A219-4FC4-BB56-C6569A78FB93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D4E7F67-A219-4FC4-BB56-C6569A78FB93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBEE9A6B-FE7E-46FE-A0FC-96179946982B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBEE9A6B-FE7E-46FE-A0FC-96179946982B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBEE9A6B-FE7E-46FE-A0FC-96179946982B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBEE9A6B-FE7E-46FE-A0FC-96179946982B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

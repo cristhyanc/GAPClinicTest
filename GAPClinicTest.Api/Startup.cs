@@ -18,6 +18,7 @@ using GAPClinicTest.Core.UseCases;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.Net.Http.Headers;
 
 namespace GAPClinicTest.Api
 {
@@ -35,16 +36,24 @@ namespace GAPClinicTest.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
-            {
-                options.AddPolicy(MyAllowSpecificOrigins,
-                builder =>
-                {
-                    builder.WithOrigins("https://localhost:44335",
-                                        "http://localhost:44335").AllowAnyHeader()
-                                .AllowAnyMethod(); ;
-                });
-            });
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy(MyAllowSpecificOrigins,
+            //    builder =>
+            //    {
+            //        builder.WithOrigins("https://localhost:44335").AllowAnyHeader().AllowCredentials()
+            //        .AllowCredentials().WithHeaders(HeaderNames.ContentType, HeaderNames.Authorization, "x-custom-header")
+            //                    .AllowAnyMethod();
+            //    });
+            //});
+            services.AddCors();
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy(MyAllowSpecificOrigins,
+            //        builder => builder.AllowAnyOrigin()
+            //        .AllowAnyMethod()
+            //        .AllowAnyHeader());
+            //});
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -74,7 +83,7 @@ namespace GAPClinicTest.Api
                   OnTokenValidated = context =>
                   {
                       var userId = context.Principal.Identity.Name;
-                      if (!userId.ToUpper().Equals("ADMIN"))
+                      if (string.IsNullOrEmpty(userId))
                       {
                             // return unauthorized if user no longer exists
                             context.Fail("Unauthorized");
@@ -82,14 +91,17 @@ namespace GAPClinicTest.Api
                       return Task.CompletedTask;
                   }
               };
+            
               x.RequireHttpsMetadata = false;
               x.SaveToken = true;
               x.TokenValidationParameters = new TokenValidationParameters
               {
                   ValidateIssuerSigningKey = true,
                   IssuerSigningKey = new SymmetricSecurityKey(key),
-                  ValidateIssuer = false,
-                  ValidateAudience = false
+                  ValidateIssuer = true,
+                  ValidateAudience = true,
+                  ValidIssuer = "http://localhost:44345/",
+                  ValidAudience = "http://localhost:44345/",
               };
           });
         }
@@ -113,7 +125,11 @@ namespace GAPClinicTest.Api
             });
 
             app.UseAuthorization();
-            app.UseCors(MyAllowSpecificOrigins);
+            //app.UseCors(MyAllowSpecificOrigins);
+            app.UseCors(x => x
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
